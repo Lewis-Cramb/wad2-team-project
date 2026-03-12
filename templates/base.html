@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>
+            RateYourModule 
+            {% block title_block %}
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div class = "navigation">
+            <h1><a href = "{% 'rateyourmodule:index%}"> RateYourModule </a></h1>
+            <form method = "get" action="{% url 'rateyourmodule:modules' %}">
+                <input type = "text", name = "query" placeholder="Search for a module">
+            </form>
+            <ul>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'rateyourmodule:profile' user.username %}">Profile</a></li>
+                <li><a href="{% url 'rateyourmodule:logout' %}">Log Out</a></li> 
+            {% else %}
+                <li><a href="{% url 'rateyourmodule:register' %}">Sign Up</a></li>
+                <li><a href="{% url 'rateyourmodule:login' %}">Log In</a></li>
+            {% endif %}
+            </ul>
+
+        </div>
+        <hr />
+        <div>
+            {% block body_block %}
+            {% endblock %}
+        </div>
+
+
+    </body>
+</html>    

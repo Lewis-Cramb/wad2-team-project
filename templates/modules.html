@@ -1,0 +1,19 @@
+{% extends 'rateyourmodule/base.html' %}
+
+{% block title_block %}
+    Modules
+{% endblock %}
+
+{% block body_block %}
+<ul>
+{% if modules %}
+    {% for m in modules %}        
+        <li>
+            <a href="{% url 'rateyourmodule:show_module' m.slug %}">{{ m.name }}</a>
+        </li>
+    {% endfor %}
+{% else %}
+    <strong>No modules currently available.</strong>
+{% endif %}
+{% endblock %}
+</ul>
