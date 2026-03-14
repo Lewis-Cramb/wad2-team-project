@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
     def __str__(self):
-        return self.user.username
+        return f"<Username: {self.user.username}>"
 
 
 class Module(models.Model):
@@ -23,7 +23,7 @@ class Module(models.Model):
     full_name = models.CharField(max_length=FULL_NAME_MAX_LEN)
 
     def __str__(self):
-        return f"moduleID: {self.moduleID}, short_name: {self.short_name}"
+        return f"<moduleID: {self.moduleID}, short_name: {self.short_name}>"
 
 
 class Review(models.Model):
@@ -47,4 +47,4 @@ class Review(models.Model):
         ]
 
     def __str__(self):
-        return f"reviewID: {self.pk}"
+        return f"<reviewID: {self.pk}, module: {self.module}, student:{self.student}>"
