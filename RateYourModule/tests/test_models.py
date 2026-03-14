@@ -59,6 +59,19 @@ class ModuleModelTests(TestCase):
 
 
 class ReviewModelTests(TestCase):
+    def test_ensure_message_can_be_empty(self):
+        profile = create_test_user()
+        module = create_test_module()
+        
+        review = models.Review.objects.create(
+            date=date.today(),
+            rating=4.4,
+            student=profile,
+            module=module
+        )
+
+        self.assertEqual(review.message, "")
+
     def test_ensure_likes_default(self):
         profile = create_test_user()
         module = create_test_module()
@@ -66,6 +79,7 @@ class ReviewModelTests(TestCase):
         review = models.Review.objects.create(
             date=date.today(),
             rating=4.4,
+            message="test message",
             student=profile,
             module=module
         )

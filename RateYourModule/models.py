@@ -27,11 +27,14 @@ class Module(models.Model):
 
 
 class Review(models.Model):
+    MESSAGE_MAX_LEN = 200
+
     date = models.DateField()
     rating = models.FloatField(
         validators=[MaxValueValidator(5.0), MinValueValidator(0.0)]
     )
     likes = models.PositiveIntegerField(default=0)
+    message = models.CharField(max_length=MESSAGE_MAX_LEN, blank=True)
     student = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
 
