@@ -10,13 +10,13 @@
     </head>
     <body>
         <div class = "navigation">
-            <h1><a href = "{% 'rateyourmodule:index%}"> RateYourModule </a></h1>
+            <h1><a href="{% url 'rateyourmodule:index' %}">RateYourModule</a></h1>
             <form method = "get" action="{% url 'rateyourmodule:modules' %}">
                 <input type = "text", name = "query" placeholder="Search for a module">
             </form>
             <ul>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'rateyourmodule:profile' user.username %}">Profile</a></li>
+                <li><a href="{% url 'rateyourmodule:show_profile' user.username %}">Profile</a></li>
                 <li><a href="{% url 'rateyourmodule:logout' %}">Log Out</a></li> 
             {% else %}
                 <li><a href="{% url 'rateyourmodule:register' %}">Sign Up</a></li>
