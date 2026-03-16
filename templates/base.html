@@ -14,7 +14,7 @@
             <h1 class="nav-inline"><a href = "{% url 'rateyourmodule:index' %}"> RateYourModule </a></h1>
             <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline"><input type = "text", name = "query" placeholder="Search for a module"></form>
             {% if user.is_authenticated %}
-                <a href="{% url 'rateyourmodule:profile' user.username %}"><button id="leftBttn" class="nav-inline">Profile</buton></a>
+                <a href="{% url 'rateyourmodule:show_profile' user.username %}"><button id="leftBttn" class="nav-inline">Profile</buton></a>
                 <a href="{% url 'rateyourmodule:logout' %}"><button id="rightBttn" class="nav-inline">Log Out</button></a> 
             {% else %}
                 <a href="{% url 'rateyourmodule:signup' %}"><button id="leftBttn" class="nav-inline">Sign Up</button></a>
