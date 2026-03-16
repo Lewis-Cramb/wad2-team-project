@@ -4,24 +4,37 @@
 {% block title_block %}
     Homepage
 {% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'CSS/index.css' %}">
+{% endblock %}
 
 {% block body_block %}
-<h1>Welcome to RateYourModule</h1>
+<heading>
+    <h1 id="index-heading">Welcome to RateYourModule</h1>
+</heading>
+<br />
+<br />
+<div id="top-modules">
+    <h2>Top rated modules</h2>
+    <div class="module-box">
+        {% if modules %}
+            <ul>
+            {% for module in modules %}
+                <li class="individ-module">    
+                    <span class="module-name">{{ module.short_name }}</span>
+                    <span class="module-rating">({{ module.rating }})</span>
+                    <span class="module-link">
+                        <a href="{% url 'rateyourmodule:show_module' module.moduleID %}">Visit</a>
+                    </span>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no modules present.</strong>
+        {% endif %}
+    </div>
+</div>
 
-<h2>Top rated modules</h2>
-{% if modules %}
-    <ul>
-    {% for module in modules %}
-        <li>    
-            <a href="{% url 'rateyourmodule:show_module' module.moduleID %}">
-                {{ module.short_name }}
-                ({{ module.rating }})
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <strong>There are no modules present.</strong>
-{% endif %}      
+<a href="{% url 'rateyourmodule:modules' %}" id="modsBttn"><button>View All Modules</button></a>
 
 {% endblock %}

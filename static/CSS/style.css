@@ -15,12 +15,17 @@ body {
 #navigation{
     display:flex ;
     align-items:center ;
-    gap:28% ;
-    flex-wrap:wrap ;
+    justify-content:space-between ;
 }
 
 #buttons{
     margin-left:auto ;
+}
+
+#nav-search{
+    position:absolute ;
+    left: 45% ;
+
 }
 
 /* Descendant/Multi Selectors */
@@ -31,6 +36,7 @@ body {
 
 #nav-search input{
     border-radius:10px ;
+    text-align:center ;
 }
 
 #nav-search input, #leftBttn, #rightBttn{
@@ -48,4 +54,3 @@ body {
     color:black ;
     text-decoration: none ;
 }
-
