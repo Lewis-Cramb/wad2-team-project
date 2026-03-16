@@ -1,8 +1,51 @@
 /* Tags */
 
+body {
+    position:relative ;
+}
+
 /* Classes (.) */
 
-/* IDs (#) */
+.nav-inline{
+    display:inline-block ;
+}
+
+/* Ids (#) */
+
+#navigation{
+    display:flex ;
+    align-items:center ;
+    gap:28% ;
+    flex-wrap:wrap ;
+}
+
+#buttons{
+    margin-left:auto ;
+}
 
 /* Descendant/Multi Selectors */
+
+#leftBttn, #rightBttn{
+    border-radius:5px ;
+}
+
+#nav-search input{
+    border-radius:10px ;
+}
+
+#nav-search input, #leftBttn, #rightBttn{
+    border:none ;
+    background-color:rgb(191, 164, 164) ;
+}
+
+
+#leftBttn, #rightBttn{
+    margin-right:10px ;
+    box-shadow: 1px 1px 5px ;
+}
+
+#nav-title a{
+    color:black ;
+    text-decoration: none ;
+}
 

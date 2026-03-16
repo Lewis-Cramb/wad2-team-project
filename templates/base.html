@@ -10,16 +10,17 @@
         <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
     </head>
     <body>
-        <div class = "navigation">
-            <h1 class="nav-inline"><a href = "{% url 'rateyourmodule:index' %}"> RateYourModule </a></h1>
-            <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline"><input type = "text", name = "query" placeholder="Search for a module"></form>
-            {% if user.is_authenticated %}
-                <a href="{% url 'rateyourmodule:show_profile' user.username %}"><button id="leftBttn" class="nav-inline">Profile</buton></a>
-                <a href="{% url 'rateyourmodule:logout' %}"><button id="rightBttn" class="nav-inline">Log Out</button></a> 
-            {% else %}
-                <a href="{% url 'rateyourmodule:signup' %}"><button id="leftBttn" class="nav-inline">Sign Up</button></a>
-                <a href="{% url 'rateyourmodule:login' %}"><button id="rightBttn" class="nav-inline">Log In</button></a>
-            {% endif %}
+        <div id="navigation">
+            <h1 class="nav-inline" id="nav-title"><a href = "{% url 'rateyourmodule:index' %}"> RateYourModule </a></h1>
+            <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline" id="nav-search"><input type = "text", name = "query" placeholder="Search for a module"></form>
+            <div id="buttons" class="nav-inline">
+                {% if user.is_authenticated %}
+                    <button id="leftBttn"><a href="{% url 'rateyourmodule:show_profile' user.username %}">Profile</a></button>
+                    <button id="rightBttn"><a href="{% url 'rateyourmodule:logout' %}">Log Out</a></button>
+                {% else %}
+                    <button id="leftBttn"><a href="{% url 'rateyourmodule:signup' %}">Sign Up</a></button>
+                    <button id="rightBttn"><a href="{% url 'rateyourmodule:login' %}">Log In</a></button>
+                {% endif %}
             </div>
 
         </div>
