@@ -9,7 +9,7 @@
 {% if modules %}
     {% for m in modules %}        
         <li>
-            <a href="{% url 'rateyourmodule:show_module' m.moduleID %}">{{ m.full_name }}</a>
+            <a href="{% url 'rateyourmodule:show_module' m.slug %}">{{ m.name }}</a>
         </li>
     {% endfor %}
 {% else %}

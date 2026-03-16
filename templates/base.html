@@ -7,22 +7,20 @@
             {% block title_block %}
             {% endblock %}
         </title>
+        <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
     </head>
     <body>
         <div class = "navigation">
-            <h1><a href="{% url 'rateyourmodule:index' %}">RateYourModule</a></h1>
-            <form method = "get" action="{% url 'rateyourmodule:modules' %}">
-                <input type = "text", name = "query" placeholder="Search for a module">
-            </form>
-            <ul>
+            <h1 class="nav-inline"><a href = "{% url 'rateyourmodule:index' %}"> RateYourModule </a></h1>
+            <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline"><input type = "text", name = "query" placeholder="Search for a module"></form>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'rateyourmodule:show_profile' user.username %}">Profile</a></li>
-                <li><a href="{% url 'rateyourmodule:logout' %}">Log Out</a></li> 
+                <a href="{% url 'rateyourmodule:profile' user.username %}"><button id="leftBttn" class="nav-inline">Profile</buton></a>
+                <a href="{% url 'rateyourmodule:logout' %}"><button id="rightBttn" class="nav-inline">Log Out</button></a> 
             {% else %}
-                <li><a href="{% url 'rateyourmodule:register' %}">Sign Up</a></li>
-                <li><a href="{% url 'rateyourmodule:login' %}">Log In</a></li>
+                <a href="{% url 'rateyourmodule:signup' %}"><button id="leftBttn" class="nav-inline">Sign Up</button></a>
+                <a href="{% url 'rateyourmodule:login' %}"><button id="rightBttn" class="nav-inline">Log In</button></a>
             {% endif %}
-            </ul>
+            </div>
 
         </div>
         <hr />
