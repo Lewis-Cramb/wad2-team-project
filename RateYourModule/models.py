@@ -22,6 +22,7 @@ class Module(models.Model):
     # full_name example: Web Application Development 2  
     full_name = models.CharField(max_length=FULL_NAME_MAX_LEN)
 
+    #Maybe needed for refacoring(reducing redundency)
     def update_average(self):
         reviews = Review.objects.filter(module=self)
         if reviews.exists():
