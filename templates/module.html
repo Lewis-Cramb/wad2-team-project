@@ -9,6 +9,7 @@
     {% if module %}
         <h1>{{ module.short_name }}</h1>
         <h2>{{ module.full_name }}</h2>
+        <h2>Average rating {{ module.rating }}</h2>
         {% if reviews %} 
             {% for review in reviews %}
                 <div class = "change_review">
