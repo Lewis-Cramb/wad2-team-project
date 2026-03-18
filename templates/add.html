@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body_block %}
-    <form id = module_form method = "post" action = "{% url 'rateyourmodule:add_module' %}">
+    <form id = module_form method = "post" action = "{% url 'rateyourmodule:add' %}">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
             {{ hidden }}
