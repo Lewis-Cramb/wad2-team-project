@@ -1,4 +1,4 @@
-{% extends 'rateyourmodule/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -7,20 +7,21 @@
 
 {% block body_block %}
     {% if module %}
-        <h1>{{ module.name }}</h1>
+        <h1>{{ module.short_name }}</h1>
+        <h2>{{ module.full_name }}</h2>
         {% if reviews %} 
             {% for review in reviews %}
                 <div class = "change_review">
-                    <h3>{{ review.author.username }}</h3>
+                    <h3>{{ review.student.user.username }}</h3>
                     <p>Rating: {{ review.rating }}</p>
-                    <p> {{ review.content }}</p>
+                    <p> {{ review.message }}</p>
 
-                    {% if user.is_authenticated and user.username == review.author.username %}
+                    {% if user.is_authenticated and user.username == review.username %}
 
                         <button type = "button" onclick="edit_review('{{ review.reviewID }}')">Edit</button>
 
                         <div class = "delete_review">
-                            <form method = "post" action = "{% url 'rateyourmodule:module' module.moduleID %}">
+                            <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
                                 {% csrf_token %}
                                 <input type = "hidden" name = "action" value = "delete_review">
                                 <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
@@ -28,7 +29,7 @@
                             </form>
                         </div>
                         <div class = "edit_review" id="edit_review{{ review.reviewID }}" style = "display:none;">
-                            <form method = "post" action = "{% url 'rateyourmodule:module' module.moduleID %}">
+                            <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
                                 {% csrf_token %}
                                 <input type = "hidden" name = "action" value = "edit_review">
                                 <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
@@ -47,9 +48,9 @@
             <p>No reviews currently available.</p>
         {% endif %}
 
-        <h1>Add a Review to {{ module.name }}</h1>
+        <h1>Add a Review to {{ module.short_name }}</h1>
         <div class = "new_review">
-            <form method = "post" action = "{% url 'rateyourmodule:module' module.moduleID %}">
+            <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
                 {% csrf_token %}
                 <input type = "hidden" name = "action" value = "new_review">
                 <input type = "number" id = "rating" name = "rating" min = "1" max = "5"  >

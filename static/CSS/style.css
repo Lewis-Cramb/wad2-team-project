@@ -1,0 +1,56 @@
+/* Tags */
+
+body {
+    position:relative ;
+}
+
+/* Classes (.) */
+
+.nav-inline{
+    display:inline-block ;
+}
+
+/* Ids (#) */
+
+#navigation{
+    display:flex ;
+    align-items:center ;
+    justify-content:space-between ;
+}
+
+#buttons{
+    margin-left:auto ;
+}
+
+#nav-search{
+    position:absolute ;
+    left: 45% ;
+
+}
+
+/* Descendant/Multi Selectors */
+
+#leftBttn, #rightBttn{
+    border-radius:5px ;
+}
+
+#nav-search input{
+    border-radius:10px ;
+    text-align:center ;
+}
+
+#nav-search input, #leftBttn, #rightBttn{
+    border:none ;
+    background-color:rgb(191, 164, 164) ;
+}
+
+
+#leftBttn, #rightBttn{
+    margin-right:10px ;
+    box-shadow: 1px 1px 5px ;
+}
+
+#nav-title a{
+    color:black ;
+    text-decoration: none ;
+}
