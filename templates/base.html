@@ -17,14 +17,13 @@
             <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline" id="nav-search"><input type = "text", name = "query" placeholder="Search for a module"></form>
             <div id="buttons" class="nav-inline">
                 {% if user.is_authenticated %}
-                    <button id="leftBttn"><a href="{% url 'rateyourmodule:show_profile' user.username %}">Profile</a></button>
+                    <button id="leftBttn"><a href="{% url 'rateyourmodule:show_profile' user.username %}">{{ user.username.capitalize }}</a></button>
                     <button id="rightBttn"><a href="{% url 'rateyourmodule:logout' %}">Log Out</a></button>
                 {% else %}
                     <button id="leftBttn"><a href="{% url 'rateyourmodule:signup' %}">Sign Up</a></button>
                     <button id="rightBttn"><a href="{% url 'rateyourmodule:login' %}">Log In</a></button>
                 {% endif %}
             </div>
-
         </div>
         <hr />
         <div>
