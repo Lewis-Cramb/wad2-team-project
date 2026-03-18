@@ -4,62 +4,74 @@
 {% block title_block %}
     {{ module.moduleID }}
 {% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'CSS/module-page.css' %}">
+{% endblock %}
 
 {% block body_block %}
-    {% if module %}
-        <h1>{{ module.short_name }}</h1>
-        <h2>{{ module.full_name }}</h2>
-        {% if reviews %} 
-            {% for review in reviews %}
-                <div class = "change_review">
-                    <h3>{{ review.student.user.username }}</h3>
-                    <p>Rating: {{ review.rating }}</p>
-                    <p> {{ review.message }}</p>
-
-                    {% if user.is_authenticated and user.username == review.username %}
-
-                        <button type = "button" onclick="edit_review('{{ review.reviewID }}')">Edit</button>
-
-                        <div class = "delete_review">
-                            <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
-                                {% csrf_token %}
-                                <input type = "hidden" name = "action" value = "delete_review">
-                                <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
-                                <button type = "submit">Delete</button>
-                            </form>
-                        </div>
-                        <div class = "edit_review" id="edit_review{{ review.reviewID }}" style = "display:none;">
-                            <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
-                                {% csrf_token %}
-                                <input type = "hidden" name = "action" value = "edit_review">
-                                <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
-                                <input type = "number" id = "review-rating-{{ review.reviewID }}" name = "rating" min = "1" max = "5" value = "{{ review.rating }}">
-                                <input type = "text" id = "review-comment-{{ review.reviewID }}" name = "comment" value = "{{ review.content }}"> 
-                                <button type = "submit"> Save </button> 
-                            </form>
-                        </div>
-                    {% endif %}  
-                </div>   
-                {% for comment in review.comments %}
-                    <p> {{ comment }} </p>
+    <main onclick="registerEvent(event)">
+        {% if module %}
+            <div id="module-heading">
+                <h1>{{ module.short_name }}</h1>
+                <h2>{{ module.full_name }}</h2>
+                {% if reviews %} 
+                    <h2>Average Rating: {{ module.rating }} / 5</h2>
+            </div>
+                {% if user.is_authenticated and user not in reviews.student %}
+                    <button id="addBttn" onclick="showAdd()">Add review</button>
+                {% endif %}
+                {% for review in reviews %}
+                    <div class = "individ-review">
+                        <img class="review-header" src="{{ review.student.user.picture }}" alt="Profile pfp"> <!-- FILL THIS IN WITH STATIC USER IMAGE LOCATION  -->
+                        <h3 class="review-header">{{ review.student.user.username }}</h3> |
+                        <p class="review-header">Rating: {{ review.rating }} / 5</p> |
+                        <p class="review-header"> {{ review.date }}</p>
+                        <p>Comment</p>
+                        <p> {{ review.message }}</p>
+                            <div id="userActions">
+                                <button id="editBttn" type = "button" onclick="showEdit()">Edit</button>
+                                <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
+                                    {% csrf_token %}
+                                    <input type = "hidden" name = "action" value = "delete_review">
+                                    <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
+                                    <button id="deleteBttn" type = "submit">Delete</button>
+                                </form>
+                            </div>
+                    </div>   
+                    {% for comment in review.comments %}
+                        <p> {{ comment }} </p>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            {% else %}
+                <p>No reviews currently available.</p>
+            {% endif %}
+            
+            <div id="add" class="add-edit" onclick="registerEvent(event)">
+                <h1>Add a Review to {{ module.short_name }}</h1>
+                <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
+                    {% csrf_token %}
+                    <input type = "hidden" name = "action" value = "new_review">
+                    <input type="hidden" name="user" value="{{ user.username }}">
+                    <label for="rating">Enter Rating*: </label><input type="number" id="rating" name="rating" min="1" max="5" required> <br />
+                    <label for="comment">Comment (Optional): </label><br /><textarea id="comment" rows="4" cols="50"></textarea> <br />
+                    <button type="submit" id="addRevBttn" onclick="hideAdd()">Submit</button> 
+                </form>   
+            </div>     
+            <div id="edit" class="add-edit" onclick="registerEvent(event)">
+                <h1>Edit your review for {{ module.short_name }}</h1>
+                <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
+                    {% csrf_token %}
+                    <input type = "hidden" name = "action" value = "edit_review">
+                    <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
+                    <label for="rating">Enter Rating*: </label><input type = "number" id = "review-rating-{{ review.reviewID }}" name = "rating" min = "1" max = "5" value = "{{ review.rating }}"><br />
+                    <label for="comment">Comment (Optional): </label><br /><textarea id="comment" rows="4" cols="50" value="{{ review.message }}"></textarea> <br />
+                    <button type = "submit"> Save </button> 
+                </form>
+            </div>
+
         {% else %}
-            <p>No reviews currently available.</p>
+            The specified module does not exist.
         {% endif %}
-
-        <h1>Add a Review to {{ module.short_name }}</h1>
-        <div class = "new_review">
-            <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
-                {% csrf_token %}
-                <input type = "hidden" name = "action" value = "new_review">
-                <input type = "number" id = "rating" name = "rating" min = "1" max = "5"  >
-                <input type = "text" name = "comment" > 
-                <button type = "submit"> Save </button> 
-            </form>   
-        </div>     
-
-    {% else %}
-        The specified module does not exist.
-    {% endif %}
+    </main>
+    <script src="{% static 'JS/addScript.js' %}"></script>
 {% endblock %}

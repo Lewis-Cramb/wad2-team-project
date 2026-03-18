@@ -39,5 +39,5 @@ def show_module(request, moduleID):
     module = Module.objects.get(moduleID=moduleID)
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
-    response = render(request, "module.html", context=context_dict)
+    response = render(request, "module.html", context=context_dict, )
     return response
