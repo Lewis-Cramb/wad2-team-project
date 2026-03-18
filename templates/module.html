@@ -22,8 +22,12 @@
                 {% endif %}
                 {% for review in reviews %}
                     <div class = "individ-review">
-                        <img class="review-header" src="{{ review.student.user.picture }}" alt="Profile pfp"> <!-- FILL THIS IN WITH STATIC USER IMAGE LOCATION  -->
-                        <h3 class="review-header">{{ review.student.user.username }}</h3> |
+                        {% if review.student.picture %}
+                            <img class="review-header" src="{{ MEDIA_URL }}{{ review.student.picture }}" alt="Profile pfp">
+                        {% else %}
+                            <img class="review-header" src="{{ MEDIA_URL }}profile_images/generic.png" alt="Profile pfp">
+                        {% endif %}
+                        <h3 class="review-header"><a href="{% url 'rateyourmodule:show_profile' review.student.user.username %}">{{ review.student.user.username }}</a></h3> |
                         <p class="review-header">Rating: {{ review.rating }} / 5</p> |
                         <p class="review-header"> {{ review.date }}</p>
                         <p>Comment</p>
