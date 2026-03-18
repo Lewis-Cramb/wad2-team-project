@@ -1,7 +1,7 @@
 from django import forms
 from RateYourModule.models import Module, Review, UserProfile
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 
 class ReviewForm(forms.ModelForm):
     rating = forms.FloatField(min_value=0, max_value=5)
@@ -10,6 +10,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('rating', 'message',)
+
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -28,3 +29,17 @@ class SignUpForm(UserCreationForm):
             UserProfile.objects.create(user=user, picture=self.cleaned_data.get("picture"))
 
         return user
+
+
+# Edit User details
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["username", "email"]
+
+
+# Edit UserProfile details
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["picture"]

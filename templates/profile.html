@@ -9,22 +9,22 @@
     {% if user.is_authenticated %}
         <div class = "profile">
             <img src = "{{ user.picture }}">
-            <h2> {{ user.username }} | Student </h2>
-            <h2> {{ user.userID }}</h2>
-            <button type = "button" onclick = "delete_profile('{{ user.userID }}')">Delete Account</button>
-            <button type = "button" onclick = "edit_profile('{{ user.userID }}')">Edit Profile</button>
+            <h2> {{ profile.user.username }} | Student </h2>
+            <h2> {{ profile.user.email }}</h2>
+            <button type = "button" onclick = "delete_profile('{{ profile.user.username }}')">Delete Account</button>
+            <button type = "button" onclick = "edit_profile('{{ profile.user.username }}')">Edit Profile</button>
 
-            <div class = "edit_profile" id="edit_profile{{ user.userID }}">
-                <form method = "post"  enctype="multipart/form-data" action = "{% url 'rateyourmodule:edit_profile' user.userID %}">
+            <div class = "edit_profile" id="edit_profile{{ profile.user.username }}">
+                <form method = "post"  enctype="multipart/form-data" action = "{% url 'rateyourmodule:edit_profile' profile.user.username %}">
                     {% csrf_token %}
                     {{ user_form.as_p }}
                     {{ profile_form.as_p }}                        
                     <button type = "submit"> Save </button> 
-                    <input type = "text" id = "user-username-{{ user.userID }}" name = "username" value = "{{ user.username }}">
+                    <input type = "text" id = "user-username-{{ profile.user.username }}" name = "username" value = "{{ profile.user.username }}">
                 </form>
             </div>
             <div class = "delete_profile">
-                <form method = "post" action = "{% url 'rateyourmodule:delete_profile' user.userID %}">
+                <form method = "post" action = "{% url 'rateyourmodule:delete_profile' profile.user.username %}">
                     {% csrf_token %}
                     <button type = "submit">Delete</button>
                 </form>

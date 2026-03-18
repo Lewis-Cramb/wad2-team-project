@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Avg
 from django.urls import reverse
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from RateYourModule.models import Module
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.forms import AuthenticationForm
+from RateYourModule.models import Module, UserProfile, Review
 from RateYourModule.forms import SignUpForm
 
 def index(request):
@@ -16,13 +19,24 @@ def index(request):
 
 
 def user_login(request):
-    return HttpResponse("temp login view")
+    if (request.method == "POST"):
+        form = AuthenticationForm(data=request.POST)
+
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect(reverse("rateyourmodule:index"))
+    else:
+        form = AuthenticationForm()
+
+    context_dict = {"form": form}
+    return render(request, "login.html", context_dict)
 
 
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('rateyourmodule:index')) 
+    return redirect(reverse("rateyourmodule:index")) 
 
 
 def signup(request):
@@ -44,7 +58,23 @@ def signup(request):
 
 
 def show_profile(request, username):
-    return HttpResponse("temp profile")
+    user_object = get_object_or_404(User, username=username)
+    user_profile = UserProfile.objects.get_or_create(user=user_object)[0]
+    reviews = Review.objects.filter(student=user_profile)
+
+    context_dict = {"user_profile": user_profile, "reviews": reviews}
+    response = render(request, "profile.html", context=context_dict)
+    return response
+
+
+@login_required
+def edit_profile(request, username):
+    return HttpResponse("Edit profile not implemented yet")
+
+
+@login_required
+def delete_profile(request, username):
+    return HttpResponse("Delete profile not implemented yet")
 
 
 def module_list(request):
@@ -63,5 +93,6 @@ def show_module(request, moduleID):
     return response
 
 
+@staff_member_required
 def add_module(request):
     return HttpResponse("temp module add view")
