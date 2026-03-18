@@ -36,8 +36,9 @@ def module_list(request):
 
 
 def show_module(request, moduleID):
-    module = Module.objects.get(moduleID=moduleID)
+    #Added rating feature with "module"
+    module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
-    response = render(request, "module.html", context=context_dict)
+    response = render(request, "module.html", context=context_dict, )
     return response

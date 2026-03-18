@@ -1,0 +1,75 @@
+/* Tags */
+
+main{
+    margin:30px ;
+    display:flex ;
+    flex-direction:column ;
+    align-items:center ;
+}
+
+button{
+    border-radius:5px ;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.03) ;
+    border:none ;
+
+}
+
+img{
+    width:25px ;
+    height:25px ;
+    padding-top:5px ;
+}
+
+/* Classes (.) */
+
+.individ-review{
+    background-color:rgb(191, 164, 164) ;
+    border-radius:5px ;
+    width:500px ;
+    margin:10px ;
+    padding-left:10px ;
+}
+
+.add-edit{
+    display:none ;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.25);
+    padding: 10px;
+    position: absolute;
+    z-index: 9999;
+    background-color: white;
+}
+
+/* IDs (#) */
+
+
+#module-heading{
+    display:block;
+    float:left;
+}
+
+#userActions{
+    display:flex ;
+    justify-content:flex-end ;
+    gap:10px ;
+    padding-right:10px ;
+    padding-bottom:10px ;
+}
+
+
+
+/* Decendant/Multi selectors */
+
+.individ-review .review-header{
+    display:inline ;
+}
+
+#edit, #add {
+    display:none ;
+}
+
+#userActions button{
+    background-color:rgb(232, 201, 201) ;
+    height:25px ;
+    border-radius:8px ;
+}
