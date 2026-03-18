@@ -1,4 +1,4 @@
-{% extends 'rateyourmodule/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -12,11 +12,10 @@
         <a href="{% url 'rateyourmodule:index' %}">Return to the homepage.</a><br />
     {% else %}
         <strong>Register here!</strong><br />
-        <form id="user_form" method="post" action="{% url 'rateyourmodule:register' %}"
+        <form id="user_form" method="post" action="{% url 'rateyourmodule:signup' %}"
             enctype="multipart/form-data">
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
+            {{ form.as_p }}
             <input type="submit" name="submit" value="Register" />
         </form>
     {% endif %}
