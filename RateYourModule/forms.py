@@ -1,7 +1,7 @@
 from django import forms
 from RateYourModule.models import Module, Review, UserProfile
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 
 class ReviewForm(forms.ModelForm):
     rating = forms.FloatField(min_value=0, max_value=5)

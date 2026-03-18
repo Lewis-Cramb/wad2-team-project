@@ -7,10 +7,7 @@
     <h1>Login to RateYourModule</h1>
     <form id="login_form" method="post" action="{% url 'rateyourmodule:login' %}">
         {% csrf_token %}
-        Username: <input type="text" name="username" value="" size="50" />
-        <br />
-        Password: <input type="password" name="password" value="" size="50" />
-        <br />
-        <input type="submit" value="submit" />
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
     </form>
 {% endblock %}
