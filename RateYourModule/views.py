@@ -62,7 +62,7 @@ def show_profile(request, username):
     user_profile = UserProfile.objects.get_or_create(user=user_object)[0]
     reviews = Review.objects.filter(student=user_profile)
 
-    context_dict = {"user_profile": user_profile, "reviews": reviews}
+    context_dict = {"profile": user_profile, "reviews": reviews}
     response = render(request, "profile.html", context=context_dict)
     return response
 
@@ -89,7 +89,7 @@ def show_module(request, moduleID):
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
-    response = render(request, "module.html", context=context_dict, )
+    response = render(request, "module.html", context=context_dict)
     return response
 
 
