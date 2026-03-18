@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Avg
 from django.urls import reverse
 from django.contrib.auth import logout, login
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm
-from RateYourModule.models import Module
+from RateYourModule.models import Module, UserProfile, Review
 from RateYourModule.forms import SignUpForm
 
 def index(request):
@@ -57,7 +58,23 @@ def signup(request):
 
 
 def show_profile(request, username):
-    return HttpResponse("temp profile")
+    user_object = get_object_or_404(User, username=username)
+    user_profile = UserProfile.objects.get_or_create(user=user_object)[0]
+    reviews = Review.objects.filter(student=user_profile)
+
+    context_dict = {"user_profile": user_profile, "reviews": reviews}
+    response = render(request, "profile.html", context=context_dict)
+    return response
+
+
+@login_required
+def edit_profile(request, username):
+    return HttpResponse("Edit profile not implemented yet")
+
+
+@login_required
+def delete_profile(request, username):
+    return HttpResponse("Delete profile not implemented yet")
 
 
 def module_list(request):

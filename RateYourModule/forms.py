@@ -11,6 +11,7 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'message',)
 
+
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
     picture = forms.ImageField(required=False)
@@ -28,3 +29,17 @@ class SignUpForm(UserCreationForm):
             UserProfile.objects.create(user=user, picture=self.cleaned_data.get("picture"))
 
         return user
+
+
+# Edit User details
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["username", "email"]
+
+
+# Edit UserProfile details
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["picture"]
