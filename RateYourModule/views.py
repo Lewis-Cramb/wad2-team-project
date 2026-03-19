@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm
 from RateYourModule.models import Module, UserProfile, Review
-from RateYourModule.forms import SignUpForm
+from RateYourModule.forms import SignUpForm, UserForm, ProfileForm
 
 def index(request):
     modules = Module.objects.annotate(rating=Avg("review__rating")).order_by("-rating")
@@ -61,8 +61,10 @@ def show_profile(request, username):
     user_object = get_object_or_404(User, username=username)
     user_profile = UserProfile.objects.get_or_create(user=user_object)[0]
     reviews = Review.objects.filter(student=user_profile)
+    user_form = UserForm(instance=user_object)
+    profile_form = ProfileForm(instance=user_profile)
 
-    context_dict = {"profile": user_profile, "reviews": reviews}
+    context_dict = {"profile": user_profile, "reviews": reviews, "user_form":user_form, "profile_form":profile_form}
     response = render(request, "profile.html", context=context_dict)
     return response
 
