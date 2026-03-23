@@ -9,6 +9,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm
 from RateYourModule.models import Module, UserProfile, Review
 from RateYourModule.forms import SignUpForm, UserForm, ProfileForm
+from django.utils.decorators import method_decorator
+from django.views import View
 
 def index(request):
     modules = Module.objects.annotate(rating=Avg("review__rating")).order_by("-rating")
@@ -98,3 +100,26 @@ def show_module(request, moduleID):
 @staff_member_required
 def add_module(request):
     return HttpResponse("temp module add view")
+
+class LikeReviewView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        review_id = request.GET.get('review_id')
+
+        try:
+            review = Review.objects.get(id=review_id)
+        except Review.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        
+        liked_reviews = request.session.get('liked_reviews', [])
+
+        if review_id not in liked_reviews:
+            review.likes += 1
+            review.save()
+            liked_reviews.append(review_id)
+            request.session['liked_reviews'] = liked_reviews
+
+        return HttpResponse(review.likes)
+

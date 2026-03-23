@@ -14,4 +14,5 @@ urlpatterns = [
     path('modules/', views.module_list, name='modules'),
     path('modules/add', views.add_module, name='add_module'),
     path('modules/<str:moduleID>', views.show_module, name='show_module'),
+    path('like_category/', views.LikeReviewView.as_view(), name='like_category'),
 ]
