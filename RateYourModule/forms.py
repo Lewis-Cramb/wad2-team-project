@@ -11,8 +11,18 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'message',)
 
+class CustomUserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = ''
 
-class SignUpForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+
+
+class SignUpForm(CustomUserCreationForm):
     email = forms.EmailField(required=True)
     picture = forms.ImageField(required=False)
 
