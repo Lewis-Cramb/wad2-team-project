@@ -14,12 +14,12 @@
             <div id="module-heading">
                 <h1>{{ module.short_name }}</h1>
                 <h2>{{ module.full_name }}</h2>
+                {% if user.is_authenticated %}
+                    <button id="addBttn" onclick="showAdd()">Add review</button>
+                {% endif %}
                 {% if reviews %} 
                     <h2>Average Rating: {{ module.rating }} / 5</h2>
             </div>
-                {% if user.is_authenticated and user not in reviews.student %}
-                    <button id="addBttn" onclick="showAdd()">Add review</button>
-                {% endif %}
                 {% for review in reviews %}
                     <div class = "individ-review">
                         {{ reivew.pk }}
