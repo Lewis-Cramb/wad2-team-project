@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 class ReviewForm(forms.ModelForm):
     rating = forms.FloatField(min_value=0, max_value=5)
-    message = forms.CharField(widget=forms.Textarea, max_length=200)
+    message = forms.CharField(widget=forms.Textarea, max_length=200, required=False)
 
     class Meta:
         model = Review

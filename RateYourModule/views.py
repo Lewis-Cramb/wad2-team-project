@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm
 from RateYourModule.models import Module, UserProfile, Review
-from RateYourModule.forms import SignUpForm, UserForm, ProfileForm
+from RateYourModule.forms import SignUpForm, UserForm, ProfileForm, ReviewForm
 from django.utils.decorators import method_decorator
 from django.views import View
 
@@ -90,6 +90,8 @@ def module_list(request):
 
 
 def show_module(request, moduleID):
+    if request.method=="POST":
+        return add_review(request, moduleID)
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
@@ -123,25 +125,27 @@ class LikeReviewView(View):
 
         return HttpResponse(review.likes)
 
+@login_required
+def add_review(request, moduleID):
+    module = get_object_or_404(Module, moduleID=moduleID)
+    user_profile = UserProfile.objects.get(user=request.user)
 
-def get_module_list(max_results=0, starts_with=''):
-    module_list = []
-    if starts_with:
-        module_list = Module.objects.filter(short_name__istartswith=starts_with)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            if Review.objects.filter(student=user_profile, module=module).exists():
+                return HttpResponse("You have already reviewed this module.")
+            review = form.save(commit=False)
+            review.student = user_profile
+            review.module = module
+            from datetime import date
+            review.date = date.today()
+            review.save()
 
-    if 0 < max_results < len(module_list):
-        module_list = module_list[:max_results]
-    
-    return module_list
-
-
-class ModuleSuggestionView(View):
-    def get(self, request):
-        if 'suggestion' in request.GET:
-            suggestion = request.GET['suggestion']
+            return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
         else:
-            suggestion = ''
-        
-        module_list = get_module_list(max_results=3, starts_with=suggestion)
+            print(form.errors)
+        form = ReviewForm()
 
-        return render(request, 'module_suggestions.html',{'modules':module_list})
+    context_dict = {'form': form, 'module': module}
+    return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
