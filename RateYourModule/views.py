@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Avg
 from RateYourModule.models import Module
+from django.http import HttpResponse, HttpResponseRedirect 
+from django.urls import reverse
+from django.contrib.auth.models import User
+
 
 def index(request):
     modules = Module.objects.annotate(rating=Avg("review__rating")).order_by("-rating")
@@ -42,3 +46,16 @@ def show_module(request, moduleID):
 
     response = render(request, "module.html", context=context_dict, )
     return response
+
+def signup(request):
+    if request.method == 'POST':
+        user = User.objects.create(
+            username=request.POST['username'],
+            password=request.POST['password'],
+            email=request.POST['email'],
+            first_name=request.POST['first_name'],
+            last_name=request.POST['last_name'],
+        )
+        user.save()
+        return HttpResponseRedirect(reverse('posts'))
+    
