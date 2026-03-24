@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm
 from RateYourModule.models import Module, UserProfile, Review
-from RateYourModule.forms import SignUpForm, UserForm, ProfileForm
+from RateYourModule.forms import SignUpForm, UserForm, ProfileForm, ReviewForm
 from django.utils.decorators import method_decorator
 from django.views import View
 
@@ -90,6 +90,8 @@ def module_list(request):
 
 
 def show_module(request, moduleID):
+    if request.method=="POST":
+        return add_review(request, moduleID)
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
@@ -123,3 +125,27 @@ class LikeReviewView(View):
 
         return HttpResponse(review.likes)
 
+@login_required
+def add_review(request, moduleID):
+    module = get_object_or_404(Module, moduleID=moduleID)
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            if Review.objects.filter(student=user_profile, module=module).exists():
+                return HttpResponse("You have already reviewed this module.")
+            review = form.save(commit=False)
+            review.student = user_profile
+            review.module = module
+            from datetime import date
+            review.date = date.today()
+            review.save()
+
+            return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+        else:
+            print(form.errors)
+        form = ReviewForm()
+
+    context_dict = {'form': form, 'module': module}
+    return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
