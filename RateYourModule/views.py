@@ -91,13 +91,14 @@ def module_list(request):
 
 
 def show_module(request, moduleID):
-    action = request.POST.get("action")
-    if action=="new_review":
-        return add_review(request, moduleID)
-    elif action=="edit_review":
-        return edit_review(request, moduleID)
-    elif action=="delete_review":
-        return delete_review(request, moduleID)
+    if request.method=="POST":
+        action = request.POST.get("action")
+        if action=="new_review":
+            return add_review(request, moduleID)
+        elif action=="edit_review":
+            return edit_review(request, moduleID)
+        elif action=="delete_review":
+            return delete_review(request, moduleID)
 
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
@@ -115,21 +116,20 @@ def add_review(request, moduleID):
     module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
 
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            if Review.objects.filter(student=user_profile, module=module).exists():
-                return HttpResponse("You have already reviewed this module.")
-            review = form.save(commit=False)
-            review.student = user_profile
-            review.module = module
-            from datetime import date
-            review.date = date.today()
-            review.save()
-            messages.success(request, "Successfully added your review!")
-            return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
-        else:
-            print(form.errors)
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        if Review.objects.filter(student=user_profile, module=module).exists():
+            return HttpResponse("You have already reviewed this module.")
+        review = form.save(commit=False)
+        review.student = user_profile
+        review.module = module
+        from datetime import date
+        review.date = date.today()
+        review.save()
+        messages.success(request, "Successfully added your review!")
+        return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+    else:
+        print(form.errors)
 
 
     context_dict = {'form': form, 'module': module}
