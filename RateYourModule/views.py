@@ -149,3 +149,8 @@ def add_review(request, moduleID):
 
     context_dict = {'form': form, 'module': module}
     return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+
+@login_required
+def edit_review(request, moduleID):
+    module = get_object_or_404(Module, moduleID=moduleID)
+    user_profile = UserProfile.objects.get(user=request.user)
