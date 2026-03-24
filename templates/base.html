@@ -14,7 +14,7 @@
     <body>
         <div id="navigation">
             <h1 class="nav-inline" id="nav-title"><a href = "{% url 'rateyourmodule:index' %}"> RateYourModule </a></h1>
-            <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline" id="nav-search"><input type = "text", name = "query" placeholder="Search for a module"></form>
+            <form method = "get" action="{% url 'rateyourmodule:modules' %}" class="nav-inline" id="nav-search" onsubmit="return false ;"><input id="search-input" type = "text", name = "query" placeholder="Search for a module"><div id="search-suggestions"></div></form>
             <div id="buttons" class="nav-inline">
                 {% if user.is_authenticated %}
                     <button id="leftBttn"><a href="{% url 'rateyourmodule:show_profile' user.username %}">{{ user.username.capitalize }}</a></button>
@@ -30,5 +30,8 @@
             {% block body_block %}
             {% endblock %}
         </div>
+        <script>var suggestUrl = "{% url 'rateyourmodule:suggest' %}" ;</script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'JS/search-ajax.js' %}"></script>
     </body>
 </html>    
