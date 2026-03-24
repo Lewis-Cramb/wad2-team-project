@@ -83,7 +83,14 @@
             The specified module does not exist.
         {% endif %}
     </main>
-    <script> var likeUrl = "{% url 'rateyourmodule:like_category' %}"</script>
+    <script>
+        var likeUrl = "{% url 'rateyourmodule:like_category' %}";
+        {% if messages %}
+            {% for message in messages %}
+                var reviewMessage = "{{ message }}";
+            {% endfor %}
+        {% endif %}
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="{% static 'JS/like-ajax.js' %}"></script>
     <script src="{% static 'JS/moduleScript.js' %}"></script>
