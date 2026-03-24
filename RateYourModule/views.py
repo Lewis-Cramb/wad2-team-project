@@ -174,7 +174,7 @@ class ModuleSuggestionView(View):
         else:
             suggestion = ''
         
-        module_list = get_module_list(max_results=3, starts_with=suggestion)
+        module_list = get_module_list(max_results=0, starts_with=suggestion)
 
         return render(request, 'module_suggestions.html',{'modules':module_list})
     
