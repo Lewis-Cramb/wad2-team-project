@@ -103,28 +103,6 @@ def show_module(request, moduleID):
 def add_module(request):
     return HttpResponse("temp module add view")
 
-class LikeReviewView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        review_id = request.GET.get('review_id')
-
-        try:
-            review = Review.objects.get(id=review_id)
-        except Review.DoesNotExist:
-            return HttpResponse(-1)
-        except ValueError:
-            return HttpResponse(-1)
-        
-        liked_reviews = request.session.get('liked_reviews', [])
-
-        if review_id not in liked_reviews:
-            review.likes += 1
-            review.save()
-            liked_reviews.append(review_id)
-            request.session['liked_reviews'] = liked_reviews
-
-        return HttpResponse(review.likes)
-
 @login_required
 def add_review(request, moduleID):
     module = get_object_or_404(Module, moduleID=moduleID)
@@ -154,3 +132,50 @@ def add_review(request, moduleID):
 def edit_review(request, moduleID):
     module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
+
+class LikeReviewView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        review_id = request.GET.get('review_id')
+
+        try:
+            review = Review.objects.get(id=review_id)
+        except Review.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        
+        liked_reviews = request.session.get('liked_reviews', [])
+
+        if review_id not in liked_reviews:
+            review.likes += 1
+            review.save()
+            liked_reviews.append(review_id)
+            request.session['liked_reviews'] = liked_reviews
+
+        return HttpResponse(review.likes)
+
+
+def get_module_list(max_results=0, starts_with=''):
+    module_list = []
+    if starts_with:
+        module_list = Module.objects.filter(short_name__istartswith=starts_with)
+
+    if 0 < max_results < len(module_list):
+        module_list = module_list[:max_results]
+    
+    return module_list
+
+
+class ModuleSuggestionView(View):
+    def get(self, request):
+        if 'suggestion' in request.GET:
+            suggestion = request.GET['suggestion']
+        else:
+            suggestion = ''
+        
+        module_list = get_module_list(max_results=3, starts_with=suggestion)
+
+        return render(request, 'module_suggestions.html',{'modules':module_list})
+    
+

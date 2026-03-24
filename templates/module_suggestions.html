@@ -1,8 +1,0 @@
-{% load staticfiles %}
-
-
-{% for module in modules %}
-    <a href="{% url 'rateyourmodule:show_module' module.moduleID %}" class="suggestion-item">
-        <strong>{{ module.short_name }}</strong> - {{ module.full_name  }}
-    </a> <br />
-{% endfor %}
