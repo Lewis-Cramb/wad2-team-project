@@ -40,7 +40,7 @@
                                     <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
                                         {% csrf_token %}
                                         <input type = "hidden" name = "action" value = "delete_review">
-                                        <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
+                                        <input type = "hidden" name = "reviewID" value = "{{ review.id }}">
                                         <button id="deleteBttn" type = "submit">Delete</button>
                                     </form>
                                 </div>
@@ -70,8 +70,8 @@
                 <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
                     {% csrf_token %}
                     <input type = "hidden" name = "action" value = "edit_review">
-                    <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
-                    <label for="rating">Enter Rating*: </label><input type = "number" id = "review-rating-{{ review.reviewID }}" name = "rating" min = "1" max = "5" value = "{{ review.rating }}"><br />
+                    <input type = "hidden" name = "reviewID" value = "{{ review.id }}">
+                    <label for="rating">Enter Rating*: </label><input type = "number" id = "review-rating-{{ review.id }}" name = "rating" min = "1" max = "5" value = "{{ review.rating }}"><br />
                     <label for="comment">Comment (Optional): </label><br /><textarea id="message" rows="4" cols="50" value="{{ review.message }}"></textarea> <br />
                     <button type = "submit"> Save </button> 
                 </form>

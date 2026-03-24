@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Avg
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -91,7 +92,14 @@ def module_list(request):
 
 def show_module(request, moduleID):
     if request.method=="POST":
-        return add_review(request, moduleID)
+        action = request.POST.get("action")
+        if action=="new_review":
+            return add_review(request, moduleID)
+        elif action=="edit_review":
+            return edit_review(request, moduleID)
+        elif action=="delete_review":
+            return delete_review(request, moduleID)
+
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
@@ -132,6 +140,21 @@ def add_review(request, moduleID):
 def edit_review(request, moduleID):
     module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
+
+@login_required
+def delete_review(request, moduleID):
+    module = get_object_or_404(Module, moduleID=moduleID)
+    user_profile = UserProfile.objects.get(user=request.user)
+    reviewID = request.POST.get("reviewID")
+    print(reviewID)
+    review = Review.objects.filter(id=reviewID, student=user_profile).first()
+    if review:
+        review.delete()
+        messages.success(request, "Successfully deleted your review!")
+    else:
+        messages.error(request, "This review was not created by you.")
+    return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+
 
 class LikeReviewView(View):
     @method_decorator(login_required)
