@@ -15,13 +15,21 @@ function hideEdit(){
 }
 
 function registerEvent(event){
-    if (event.target.id == "addBttn" || event.target.closest('#add')) {
-        return hideEdit() ;
-    } else if (event.target.id == "editBttn" || event.target.closest('#edit')){
-        return hideAdd() ;
+    if (event.target.id == "editBttn" || event.target.closest('#edit') || event.target.closest('#add')) return; 
+
+    if (event.target.id == "addBttn") {
+        hideEdit();
+        showAdd(); 
     } else {
-        return hideAll() ;
+        hideAll();
     }
+}
+
+function prepareEdit(id, rating, message) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-rating').value = rating;
+    document.getElementById('edit-message').value = message;
+    showEdit(); 
 }
 
 function hideAll(){

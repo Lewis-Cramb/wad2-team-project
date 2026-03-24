@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Avg
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -91,7 +92,14 @@ def module_list(request):
 
 def show_module(request, moduleID):
     if request.method=="POST":
-        return add_review(request, moduleID)
+        action = request.POST.get("action")
+        if action=="new_review":
+            return add_review(request, moduleID)
+        elif action=="edit_review":
+            return edit_review(request, moduleID)
+        elif action=="delete_review":
+            return delete_review(request, moduleID)
+
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}
 
@@ -108,30 +116,60 @@ def add_review(request, moduleID):
     module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
 
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            if Review.objects.filter(student=user_profile, module=module).exists():
-                return HttpResponse("You have already reviewed this module.")
-            review = form.save(commit=False)
-            review.student = user_profile
-            review.module = module
-            from datetime import date
-            review.date = date.today()
-            review.save()
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        if Review.objects.filter(student=user_profile, module=module).exists():
+            return HttpResponse("You have already reviewed this module.")
+        review = form.save(commit=False)
+        review.student = user_profile
+        review.module = module
+        from datetime import date
+        review.date = date.today()
+        review.save()
+        messages.success(request, "Successfully added your review!")
+        return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+    else:
+        print(form.errors)
 
-            return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
-        else:
-            print(form.errors)
-        form = ReviewForm()
 
     context_dict = {'form': form, 'module': module}
     return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
 
 @login_required
 def edit_review(request, moduleID):
-    module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
+    reviewID = request.POST.get("reviewID")
+    print(reviewID)
+    review = Review.objects.filter(id=reviewID, student=user_profile).first()
+    if review:
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            review = form.save(commit=False)
+            from datetime import date
+            review.date = date.today()
+            review.save()
+            messages.success(request, "Successfully edited your review!")
+        else:
+            messages.error(request, "Form data invalid.")
+            print(form.errors)
+    else:
+        messages.error(request, "This review was not created by you.")
+    return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+
+
+@login_required
+def delete_review(request, moduleID):
+    user_profile = UserProfile.objects.get(user=request.user)
+    reviewID = request.POST.get("reviewID")
+    print(reviewID)
+    review = Review.objects.filter(id=reviewID, student=user_profile).first()
+    if review:
+        review.delete()
+        messages.success(request, "Successfully deleted your review!")
+    else:
+        messages.error(request, "This review was not created by you.")
+    return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+
 
 class LikeReviewView(View):
     @method_decorator(login_required)
