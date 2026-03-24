@@ -91,14 +91,13 @@ def module_list(request):
 
 
 def show_module(request, moduleID):
-    if request.method=="POST":
-        action = request.POST.get("action")
-        if action=="new_review":
-            return add_review(request, moduleID)
-        elif action=="edit_review":
-            return edit_review(request, moduleID)
-        elif action=="delete_review":
-            return delete_review(request, moduleID)
+    action = request.POST.get("action")
+    if action=="new_review":
+        return add_review(request, moduleID)
+    elif action=="edit_review":
+        return edit_review(request, moduleID)
+    elif action=="delete_review":
+        return delete_review(request, moduleID)
 
     module = Module.objects.annotate(rating=Avg("review__rating")).get(moduleID=moduleID)    
     context_dict = {"module": module, "reviews": module.review_set.all()}

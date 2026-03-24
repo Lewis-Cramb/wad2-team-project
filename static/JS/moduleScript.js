@@ -15,12 +15,11 @@ function hideEdit(){
 }
 
 function registerEvent(event){
-    // Ignore if clicking the edit button or inside the edit/add popups
     if (event.target.id == "editBttn" || event.target.closest('#edit') || event.target.closest('#add')) return; 
 
     if (event.target.id == "addBttn") {
         hideEdit();
-        showAdd(); // Ensure add shows up when button is clicked
+        showAdd(); 
     } else {
         hideAll();
     }
