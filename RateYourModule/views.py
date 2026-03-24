@@ -127,23 +127,39 @@ def add_review(request, moduleID):
             from datetime import date
             review.date = date.today()
             review.save()
-
+            messages.success(request, "Successfully added your review!")
             return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
         else:
             print(form.errors)
-        form = ReviewForm()
+
 
     context_dict = {'form': form, 'module': module}
     return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
 
 @login_required
 def edit_review(request, moduleID):
-    module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
+    reviewID = request.POST.get("reviewID")
+    print(reviewID)
+    review = Review.objects.filter(id=reviewID, student=user_profile).first()
+    if review:
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            review = form.save(commit=False)
+            from datetime import date
+            review.date = date.today()
+            review.save()
+            messages.success(request, "Successfully edited your review!")
+        else:
+            messages.error(request, "Form data invalid.")
+            print(form.errors)
+    else:
+        messages.error(request, "This review was not created by you.")
+    return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID': moduleID}))
+
 
 @login_required
 def delete_review(request, moduleID):
-    module = get_object_or_404(Module, moduleID=moduleID)
     user_profile = UserProfile.objects.get(user=request.user)
     reviewID = request.POST.get("reviewID")
     print(reviewID)
