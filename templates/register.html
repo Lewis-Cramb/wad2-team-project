@@ -1,23 +1,28 @@
-{% extends 'rateyourmodule/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
     Register
 {% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href ="{% static 'CSS/forms.css' %}">
+{% endblock %}
 
 {% block body_block %}
-    <h1>Register</h1>
-    {% if registered %}
-        <strong>Thank you for registering!</strong>
-        <a href="{% url 'rateyourmodule:index' %}">Return to the homepage.</a><br />
-    {% else %}
-        <strong>Register here!</strong><br />
-        <form id="user_form" method="post" action="{% url 'rateyourmodule:register' %}"
-            enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            <input type="submit" name="submit" value="Register" />
-        </form>
-    {% endif %}
+    <main>
+        {% if registered %}
+            <strong>Thank you for registering!</strong>
+            <a href="{% url 'rateyourmodule:index' %}">Return to the homepage.</a><br />
+        {% else %}
+            <div id="form">
+                <strong>Sign Up Form</strong>
+                <form id="user_form" method="post" action="{% url 'rateyourmodule:signup' %}"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" name="submit" value="Sign Up" class="formSubmit"/>
+                </form>
+            </div>
+        {% endif %}
+    </main>
 {% endblock %}

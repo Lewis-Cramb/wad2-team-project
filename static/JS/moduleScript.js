@@ -15,7 +15,7 @@ function hideEdit(){
 }
 
 function registerEvent(event){
-    if (event.target.id == "addBttn" | event.target.closest('#add')) {
+    if (event.target.id == "addBttn" || event.target.closest('#add')) {
         return hideEdit() ;
     } else if (event.target.id == "editBttn" || event.target.closest('#edit')){
         return hideAdd() ;

@@ -14,14 +14,15 @@
             <div id="module-heading">
                 <h1>{{ module.short_name }}</h1>
                 <h2>{{ module.full_name }}</h2>
+                {% if user.is_authenticated %}
+                    <button id="addBttn" onclick="showAdd()">Add review</button>
+                {% endif %}
                 {% if reviews %} 
                     <h2>Average Rating: {{ module.rating }} / 5</h2>
             </div>
-                {% if user.is_authenticated and user not in reviews.student %}
-                    <button id="addBttn" onclick="showAdd()">Add review</button>
-                {% endif %}
                 {% for review in reviews %}
                     <div class = "individ-review">
+                        {{ reivew.pk }}
                         {% if review.student.picture %}
                             <img class="review-header" src="{{ MEDIA_URL }}{{ review.student.picture }}" alt="Profile pfp">
                         {% else %}
@@ -33,13 +34,16 @@
                         <p>Comment</p>
                         <p> {{ review.message }}</p>
                             <div id="userActions">
-                                <button id="editBttn" type = "button" onclick="showEdit()">Edit</button>
-                                <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
-                                    {% csrf_token %}
-                                    <input type = "hidden" name = "action" value = "delete_review">
-                                    <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
-                                    <button id="deleteBttn" type = "submit">Delete</button>
-                                </form>
+                                <button data-category-id="{{ review.id }}" class="btn btn-primary btn-sm likeBttn">&#128077; <strong id="like_count"> {{ review.likes }} </strong></button>
+                                <div id="userBttns">
+                                    <button id="editBttn" type = "button" onclick="showEdit()">Edit</button>
+                                    <form method = "post" action = "{% url 'rateyourmodule:show_module' module.moduleID %}">
+                                        {% csrf_token %}
+                                        <input type = "hidden" name = "action" value = "delete_review">
+                                        <input type = "hidden" name = "reviewID" value = "{{ review.reviewID }}">
+                                        <button id="deleteBttn" type = "submit">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                     </div>   
                     {% for comment in review.comments %}
@@ -77,5 +81,8 @@
             The specified module does not exist.
         {% endif %}
     </main>
-    <script src="{% static 'JS/addScript.js' %}"></script>
+    <script> var likeUrl = "{% url 'rateyourmodule:like_category' %}"</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="{% static 'JS/ajax.js' %}"></script>
+    <script src="{% static 'JS/moduleScript.js' %}"></script>
 {% endblock %}

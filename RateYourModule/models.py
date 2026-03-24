@@ -29,6 +29,8 @@ class Module(models.Model):
             self.average_rating = sum(r.rating for r in reviews) / reviews.count()
             self.save()
 
+    reviews = models.ManyToManyField(UserProfile, through="Review")
+
     def __str__(self):
         return f"<moduleID: {self.moduleID}, short_name: {self.short_name}>"
 

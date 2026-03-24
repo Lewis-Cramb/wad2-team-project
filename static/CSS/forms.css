@@ -1,0 +1,52 @@
+/* Tags */
+
+main{
+    display:flex ;
+    justify-content:center ;
+    align-items:flex-start ;
+    font-size:20px ;
+}
+
+strong{
+    margin:0px ;
+    display:block ;
+}
+
+/* IDs (#) */
+
+#form{
+    display:flex ;
+    flex-direction:column ;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.25);
+    padding: 10px;
+    position: absolute;
+    z-index: 9999;
+    background-color: white;
+    align-items:center ;
+}
+
+/* Classes (.) */
+
+.formSubmit{
+    text-align:center ;
+    width:200px ;
+}
+
+/* Descendant/Mutli selectors */
+
+#form label{
+    display:block ;
+}
+
+.formSubmit, #form input{
+    background-color:rgb(191, 164, 164) ;
+    border:none ;
+    border-radius:5px ;
+}
+
+#id_picture{
+    background-color:white !important ;
+}
+
+

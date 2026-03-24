@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Profile
+{% endblock %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'CSS/module-page.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/profile.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<div onclick="manageEvent(event)">
+    <div class = "profile">
+        {% if profile.picture %}
+            <img class="profile-items" src="{{ MEDIA_URL }}{{ profile.picture }}" alt="Profile pfp">
+        {% else %}
+            <img class="profile-items" src="{{ MEDIA_URL }}profile_images/generic.png" alt="Profile pfp">
+        {% endif %}
+        <div class="profile-items">
+            <h2> {{ profile.user.username }} | Student </h2>
+            <h2> {{ profile.user.email }}</h2>
+        </div>
+        <div class="profile-items">
+            <form method = "post" action = "{% url 'rateyourmodule:delete_profile' profile.user.username %}">
+                {% csrf_token %}
+                <button type = "submit">Delete Profile</button>
+            </form>
+            <button id="editBttn" type = "button" onclick = "showEdit()">Edit Profile</button>
+        </div>
+    </div>
+
+    <div id="edit-profile">
+        <h2>Edit your profile:</h2>
+        <div id="edit-form">
+            <form method = "post"  enctype="multipart/form-data" action = "{% url 'rateyourmodule:edit_profile' profile.user.username %}">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                <button type = "submit"> Save </button> 
+            </form>
+        </div>
+    </div>
+
+    <br />
+    {% if reviews %} 
+        <div id="review-part" onclick="manageEvent(event)">
+            <h2 id="tester"> {{ profile.user.username }}'s Top Reviews (Highest Rated):</h2>
+            {% for review in reviews %}
+                <div class = "individ-review">
+                    <h3 class="review-header">{{ review.student.user.username }}</h3> |
+                    <p class="review-header">Rating: {{ review.rating }} / 5</p> |
+                    <p class="review-header"> {{ review.date }}</p>
+                    <p class="review-header" id="review-mod">{{ review.module.short_name }}</p>
+                    <p>Comment</p>
+                    <p> {{ review.message }}</p>
+                </div>   
+                {% for comment in review.comments %}
+                    <p> {{ comment }} </p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No reviews currently available.</p>
+    {% endif %}
+</div>
+    <script src="{% static 'JS/profileScript.js' %}"></script>
+{% endblock %}
