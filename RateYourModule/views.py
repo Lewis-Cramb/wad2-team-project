@@ -123,3 +123,25 @@ class LikeReviewView(View):
 
         return HttpResponse(review.likes)
 
+
+def get_module_list(max_results=0, starts_with=''):
+    module_list = []
+    if starts_with:
+        module_list = Module.objects.filter(short_name__istartswith=starts_with)
+
+    if 0 < max_results < len(module_list):
+        module_list = module_list[:max_results]
+    
+    return module_list
+
+
+class ModuleSuggestionView(View):
+    def get(self, request):
+        if 'suggestion' in request.GET:
+            suggestion = request.GET['suggestion']
+        else:
+            suggestion = ''
+        
+        module_list = get_module_list(max_results=3, starts_with=suggestion)
+
+        return render(request, 'module_suggestions.html',{'modules':module_list})
