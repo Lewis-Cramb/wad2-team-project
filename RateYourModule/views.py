@@ -79,7 +79,15 @@ def edit_profile(request, username):
 
 @login_required
 def delete_profile(request, username):
-    return HttpResponse("Delete profile not implemented yet")
+    profile_user = get_object_or_404(User, username=username)
+    logged_in_user = request.user
+
+    if (profile_user.username == logged_in_user or logged_in_user.is_staff):
+        profile_user.delete()
+    else:
+        return redirect(reverse("rateyourmodule:show_profile", kwargs={"username": profile_user.username}))
+
+    return redirect(reverse("rateyourmodule:index"))
 
 
 def module_list(request):
