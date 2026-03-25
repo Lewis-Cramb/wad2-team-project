@@ -20,6 +20,19 @@
             <strong>No modules currently available.</strong>
         {% endif %}
     </div>
+
+    <button id="addMod" onclick="showMod()">Add Module</button>
+
+    <div id="addModule">
+        <form method="post" action="{% url 'rateyourmodule:modules' %}">
+            {% csrf_token %}
+            <label for="mod-id">Module ID: </label> <input type="text" id="mod-id" name="moduleID">
+            <label for="mod-short">Short name: </label> <input type="text" id="mod-short" name="short_name">
+            <label for="mod-long">Long name: </label> <input type="text" id="mod-long" name="long_name">
+            <button type="submit" id="modBttn">Add Module</button>
+        </form>
+    </div>
 </main>
+<script src="{% static 'JS/addModuleScript.js' %}"></script>
 
 {% endblock %}
