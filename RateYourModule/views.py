@@ -82,7 +82,7 @@ def delete_profile(request, username):
     profile_user = get_object_or_404(User, username=username)
     logged_in_user = request.user
 
-    if (profile_user.username == logged_in_user or logged_in_user.is_staff):
+    if (profile_user.username == logged_in_user.username or logged_in_user.is_staff):
         profile_user.delete()
     else:
         return redirect(reverse("rateyourmodule:show_profile", kwargs={"username": profile_user.username}))
