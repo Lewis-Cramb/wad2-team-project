@@ -23,11 +23,11 @@
 
     <button id="addMod" onclick="showMod()">Add Module</button>
     <div id="addModule" onclick="manageClick(event)">
-        <form method="post" action="{% url 'rateyourmodule:modules' %}">
+        <form method="post" action="{% url 'rateyourmodule:add_module' %}">
             {% csrf_token %}
-            <label for="mod-id">Module ID: </label> <input type="text" id="mod-id" name="moduleID"> <br />
-            <label for="mod-short">Short name: </label> <input type="text" id="mod-short" name="short_name"> <br />
-            <label for="mod-long">Long name: </label> <input type="text" id="mod-long" name="long_name"> <br />
+            <label for="mod-id">Module ID: </label> <input type="text" id="mod-id" name="moduleID" required> <br />
+            <label for="mod-short">Short name: </label> <input type="text" id="mod-short" name="short_name" required> <br />
+            <label for="mod-long">Full name: </label> <input type="text" id="mod-long" name="full_name" required> <br />
             <button type="submit" id="modBttn">Add Module</button>
         </form>
     </div>

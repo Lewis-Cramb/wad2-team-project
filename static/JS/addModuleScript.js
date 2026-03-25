@@ -7,7 +7,7 @@ function hideAdd(){
 }
 
 function manageClick(event){
-    if (event.target.id=="addMod" || event.target.closest==("#addModule")){
+    if (event.target.id == "addMod" || event.target.closest('#addModule')){
         return ;
     }
     return hideAdd() ;

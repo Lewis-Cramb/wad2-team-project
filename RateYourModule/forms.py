@@ -11,6 +11,15 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('rating', 'message',)
 
+class ModuleForm(forms.ModelForm):
+    moduleID = forms.CharField(max_length=20)
+    short_name = forms.CharField(max_length=20)
+    full_name = forms.CharField(max_length=50)
+
+    class Meta:
+        model = Module
+        fields = ('moduleID','short_name','full_name')
+
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
