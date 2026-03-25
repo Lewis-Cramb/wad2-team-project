@@ -21,13 +21,15 @@
             <h2> {{ profile.user.username }} | Student </h2>
             <h2> {{ profile.user.email }}</h2>
         </div>
-        <div class="profile-items">
-            <form method = "post" action = "{% url 'rateyourmodule:delete_profile' profile.user.username %}">
-                {% csrf_token %}
-                <button type = "submit">Delete Profile</button>
-            </form>
-            <button id="editBttn" type = "button" onclick = "showEdit()">Edit Profile</button>
-        </div>
+        {% if user.username == profile.user.username or user.is_staff %}
+            <div class="profile-items">
+                <form method = "post" action = "{% url 'rateyourmodule:delete_profile' profile.user.username %}">
+                    {% csrf_token %}
+                    <button type = "submit">Delete Profile</button>
+                </form>
+                <button id="editBttn" type = "button" onclick = "showEdit()">Edit Profile</button>
+            </div>
+        {% endif %}
     </div>
 
     <div id="edit-profile">
