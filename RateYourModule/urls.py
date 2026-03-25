@@ -16,4 +16,5 @@ urlpatterns = [
     path('modules/<str:moduleID>', views.show_module, name='show_module'),
     path('like_category/', views.LikeReviewView.as_view(), name='like_category'),
     path('suggest/', views.ModuleSuggestionView.as_view(), name='suggest'),
+    path('modules/delete/<str:moduleID>', views.delete_module, name="delete_module"),
 ]

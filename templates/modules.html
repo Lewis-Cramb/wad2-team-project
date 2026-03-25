@@ -13,15 +13,26 @@
     <div id="modules">
         {% if modules %}
             {% for m in modules %}        
-                <p>{{ m.short_name }}:</p><a href="{% url 'rateyourmodule:show_module' m.moduleID %}">{{ m.full_name }}</a>
-                <br />
+                <div class="modBox">
+                    <div class="modTop">
+                        <p>{{ m.short_name }}:</p>
+                        {% if user.is_staff %}
+                            <form method = "post" action = "{% url 'rateyourmodule:delete_module' m.moduleID %}">
+                                {% csrf_token %}
+                                <button class="deleteBttn" type = "submit">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'rateyourmodule:show_module' m.moduleID %}">{{ m.full_name }}</a>
+                    <br />
             {% endfor %}
         {% else %}
             <strong>No modules currently available.</strong>
         {% endif %}
     </div>
-
-    <button id="addMod" onclick="showMod()">Add Module</button>
+    {% if user.is_staff %}
+        <button id="addMod" onclick="showMod()">Add Module</button>
+    {% endif %}
     <div id="addModule" onclick="manageClick(event)">
         <form method="post" action="{% url 'rateyourmodule:add_module' %}">
             {% csrf_token %}

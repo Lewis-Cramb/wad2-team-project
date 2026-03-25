@@ -9,7 +9,6 @@ main{
 }
 
 
-
 /* ids (#) */
 
 #modules{
@@ -46,12 +45,25 @@ width:100px ;
 }
 /* classes (.) */
 
+.modBox{
+    display:flex ;
+    flex-direction:column ;
+}
+
+.modTop{
+    display:flex ;
+    justify-content:space-between ;
+}
+
 /* mutli/descendant selectors */
-p, a{
+p, a, .deleteBttn{
     display:inline ;
     margin:0px ;
 }
 #mod-id, #mod-long, #mod-short{
     margin-left:30px ;
     margin-bottom:20px ;
+}
+.modBox a{
+    margin-bottom:40px ;
 }

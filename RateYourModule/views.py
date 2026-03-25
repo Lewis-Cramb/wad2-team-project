@@ -134,6 +134,10 @@ def add_module(request):
         messages.error(request, "Error in the form.")
         return redirect(reverse('rateyourmodule:modules'))
 
+@staff_member_required
+def delete_module(request, moduleID):
+    return HttpResponse("Work in progress...")
+
 
 @login_required
 def add_review(request, moduleID):

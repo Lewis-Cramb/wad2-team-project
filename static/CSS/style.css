@@ -4,6 +4,13 @@ body {
     position:relative ;
 }
 
+button{
+    border-radius:5px ;
+    background-color: rgb(191, 164, 164) ;
+    border:none ;
+}
+
+
 /* Classes (.) */
 
 .nav-inline{
