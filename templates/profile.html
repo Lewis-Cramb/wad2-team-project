@@ -35,7 +35,7 @@
     <div id="edit-profile">
         <h2>Edit your profile:</h2>
         <div id="edit-form">
-            <form method = "post"  enctype="multipart/form-data" action = "{% url 'rateyourmodule:edit_profile' profile.user.username %}">
+            <form method = "POST"  enctype="multipart/form-data" action = "{% url 'rateyourmodule:edit_profile' profile.user.username %}">
                 {% csrf_token %}
                 {{ user_form.as_p }}
                 {{ profile_form.as_p }}

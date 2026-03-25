@@ -74,7 +74,23 @@ def show_profile(request, username):
 
 @login_required
 def edit_profile(request, username):
-    return HttpResponse("Edit profile not implemented yet")
+    user_profile = UserProfile.objects.get(user=request.user)
+    logged_in_user = request.user
+    if logged_in_user.username == user_profile.user.username:
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = UserForm(request.POST, request.FILES, instance=user_profile)
+
+        if (user_form.is_valid() and profile_form.is_valid()):
+            user_profile = user_form.save()
+            profile_form.save()
+            messages.success(request, "Successfully edited your profile!")
+        else:
+            messages.error(request, "Form data invalid.")
+            print(user_form.errors)
+            print(profile_form.errors)
+    else:
+        messages.error(request, "This is not your profile.")
+    return redirect(reverse('rateyourmodule:show_profile', kwargs={'username': user_profile.username}))
 
 
 @login_required
