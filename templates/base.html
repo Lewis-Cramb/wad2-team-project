@@ -30,8 +30,16 @@
             {% block body_block %}
             {% endblock %}
         </div>
-        <script>var suggestUrl = "{% url 'rateyourmodule:suggest' %}" ;</script>
+        <script>
+            var suggestUrl = "{% url 'rateyourmodule:suggest' %}" ;
+            {% if messages %}
+                {% for message in messages %}
+                    var reviewMessage = "{{ message }}";
+                {% endfor %}
+            {% endif %}
+        </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'JS/search-ajax.js' %}"></script>
+        <script src="{% static 'JS/alert-ajax.js' %}"></script>
     </body>
 </html>    

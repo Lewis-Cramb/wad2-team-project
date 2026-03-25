@@ -83,11 +83,13 @@ def delete_profile(request, username):
     logged_in_user = request.user
 
     if (profile_user.username == logged_in_user or logged_in_user.is_staff):
+        messages.success(request,"Profile successfully deleted")
         profile_user.delete()
+        return redirect(reverse("rateyourmodule:index"))
     else:
+        messages.error(request,"You cannot delete this profile.")
         return redirect(reverse("rateyourmodule:show_profile", kwargs={"username": profile_user.username}))
 
-    return redirect(reverse("rateyourmodule:index"))
 
 
 def module_list(request):
