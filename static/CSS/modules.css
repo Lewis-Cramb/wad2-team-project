@@ -3,6 +3,9 @@
 main{
     display:flex ;
     justify-content:center ;
+    align-items:center ;
+    flex-direction:column ;
+    gap:20px ;
 }
 
 
@@ -21,10 +24,34 @@ main{
     border:1px solid black ;
 }
 
+#addMod{
+width:100px ;
+}
+
+#addModule{
+    display:none ;
+    position:fixed ;
+    top:50% ;
+    left:50% ;
+    transform:translate(-50%, -50%) ;
+    width:350px ;
+    height:150px ;
+    border:2px solid black ;
+    background-color:white ;
+    padding:10px ;
+    gap:20px ;
+    z-index:1000 ;
+    box-shadow:0 0 12px rgba(0,0,0,0.2) ;
+    border-radius:5px ;
+}
 /* classes (.) */
 
 /* mutli/descendant selectors */
 p, a{
     display:inline ;
     margin:0px ;
+}
+#mod-id, #mod-long, #mod-short{
+    margin-left:30px ;
+    margin-bottom:20px ;
 }
