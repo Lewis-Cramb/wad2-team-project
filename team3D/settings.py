@@ -27,7 +27,7 @@ SECRET_KEY = 'u_h0pdjc!skk41vihe(qbg1g(8e9k6r65s8bf%z*^hfft2^h%l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['RateYourModuleLC.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
