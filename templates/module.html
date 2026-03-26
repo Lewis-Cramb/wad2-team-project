@@ -34,7 +34,7 @@
                         <p>Comment</p>
                         <p> {{ review.message }}</p>
                             <div id="userActions">
-                                <button data-category-id="{{ review.id }}" class="btn btn-primary btn-sm likeBttn">&#128077; <strong id="like_count"> {{ review.likes }} </strong></button>
+                                <button data-category-id="{{ review.id }}" class="likeBttn">&#128077; <strong id="like_count"> {{ review.likes }} </strong></button>
                                 {% if user.username == review.student.user.username or user.is_staff %}
                                     <div id="userBttns">
                                     <button id="editBttn" type="button" onclick="prepareEdit('{{ review.id }}', '{{ review.rating }}', '{{ review.message|escapejs }}')">Edit</button>

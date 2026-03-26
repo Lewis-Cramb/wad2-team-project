@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.forms import AuthenticationForm
 from RateYourModule.models import Module, UserProfile, Review
-from RateYourModule.forms import SignUpForm, UserForm, ProfileForm, ReviewForm
+from RateYourModule.forms import SignUpForm, UserForm, ProfileForm, ReviewForm, ModuleForm
 from django.utils.decorators import method_decorator
 from django.views import View
 
@@ -135,7 +135,31 @@ def show_module(request, moduleID):
 
 @staff_member_required
 def add_module(request):
-    return HttpResponse("temp module add view")
+    messages.success(request, "In add_module in views.py")
+    print(request.POST)
+    form = ModuleForm(request.POST)
+    if form.is_valid():
+        if Module.objects.filter(moduleID=request.POST['moduleID']).exists():
+            messages.error(request, "This module already exists.")
+            return redirect(reverse('rateyourmodule:modules'))
+        form.save(commit=True)
+        messages.success(request, "Successfully added your module!")
+        return redirect(reverse('rateyourmodule:modules'))
+    else:
+        print(form.errors)
+        messages.error(request, "Error in the form.")
+        return redirect(reverse('rateyourmodule:modules'))
+
+@staff_member_required
+def delete_module(request, moduleID):
+    module = Module.objects.filter(moduleID=moduleID).first()
+    if module:
+        module.delete()
+        messages.success(request, "Successfully deleted the module!")
+    else:
+        messages.error(request, "This module does not exist.")
+    return redirect(reverse('rateyourmodule:modules'))
+
 
 @login_required
 def add_review(request, moduleID):
@@ -145,7 +169,8 @@ def add_review(request, moduleID):
     form = ReviewForm(request.POST)
     if form.is_valid():
         if Review.objects.filter(student=user_profile, module=module).exists():
-            return HttpResponse("You have already reviewed this module.")
+           messages.error(request, "You have already reviewed this module.")
+           return redirect(reverse('rateyourmodule:show_module', kwargs={'moduleID':moduleID}))
         review = form.save(commit=False)
         review.student = user_profile
         review.module = module

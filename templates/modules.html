@@ -9,17 +9,41 @@
 {% endblock %}
 
 {% block body_block %}
-<main>
+<main onclick="manageClick(event)">
     <div id="modules">
         {% if modules %}
             {% for m in modules %}        
-                <p>{{ m.short_name }}:</p><a href="{% url 'rateyourmodule:show_module' m.moduleID %}">{{ m.full_name }}</a>
-                <br />
+                <div class="modBox">
+                    <div class="modTop">
+                        <p>{{ m.short_name }}:</p>
+                        {% if user.is_staff %}
+                            <form method = "post" action = "{% url 'rateyourmodule:delete_module' m.moduleID %}">
+                                {% csrf_token %}
+                                <button class="deleteBttn" type = "submit">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'rateyourmodule:show_module' m.moduleID %}">{{ m.full_name }}</a>
+                    <br />
             {% endfor %}
         {% else %}
             <strong>No modules currently available.</strong>
         {% endif %}
     </div>
+    {% if user.is_staff %}
+        <button id="addMod" onclick="showMod()">Add Module</button>
+    {% endif %}
+    <div id="addModule" onclick="manageClick(event)">
+        <form method="post" action="{% url 'rateyourmodule:add_module' %}">
+            {% csrf_token %}
+            <label for="mod-id">Module ID: </label> <input type="text" id="mod-id" name="moduleID" required> <br />
+            <label for="mod-short">Short name: </label> <input type="text" id="mod-short" name="short_name" required> <br />
+            <label for="mod-long">Full name: </label> <input type="text" id="mod-long" name="full_name" required> <br />
+            <button type="submit" id="modBttn">Add Module</button>
+        </form>
+    </div>
 </main>
+
+<script src="{% static 'JS/addModuleScript.js' %}"></script>
 
 {% endblock %}
