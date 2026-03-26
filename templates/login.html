@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+    Login
+{% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href ="{% static 'CSS/forms.css' %}">
+{% endblock %}
+
+
+{% block body_block %}
+    <main>
+        <div id="form">
+            <h1>Login to RateYourModule</h1>
+            <form id="login_form" method="post" action="{% url 'rateyourmodule:login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </main>
+{% endblock %}

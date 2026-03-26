@@ -1,0 +1,81 @@
+/* Tags */
+
+
+
+/* Classes (.) */
+
+.individ-module{
+    background-color:white;
+    border-radius:5px ;
+    box-shadow:1px 1px 5px;
+    width:300px;
+    margin:10px -10px auto;
+    text-align:center;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    font-size:25px ;
+}
+
+.module-box{
+    background-color:rgb(191, 164, 164) ;
+    border-radius:10px ;
+    width:400px ;
+    height:300px ;
+    overflow-y:auto ;
+    display:flex ;
+    justify-content:center ;
+    margin-bottom:50px ;
+}
+
+
+/* Ids (#) */
+
+#top-modules{
+    display:flex ;
+    flex-direction:column ;
+    align-items:center ;
+}
+
+#modsBttn{
+    display:flex ;
+    justify-content:center ;
+}
+
+/* Descendant/Multi Selectors */
+
+heading, #top-modules{
+    text-align:center ;
+    align-items:center ;
+}
+
+#top-modules h2{
+    background-color:rgb(191, 164, 164) ;
+    width:400px ;
+    border-radius:5px; 
+    text-align:left ;
+}
+
+.module-box ul{
+    list-style-type: none ;
+    padding:0px ;
+    margin:0px ;
+}
+
+.individ-module a{
+    color:black ;
+    text-decoration:none ;
+}
+
+.individ-module span{
+    flex:1;
+    text-align:center;
+}
+
+#modsBttn button{
+    border:none ;
+    background-color:rgb(191, 164, 164) ;
+    box-shadow: 1px 1px 5px ;
+
+}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Modules
+{% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'CSS/modules.css' %}">
+{% endblock %}
+
+{% block body_block %}
+<main>
+    <div id="modules">
+        {% if modules %}
+            {% for m in modules %}        
+                <p>{{ m.short_name }}:</p><a href="{% url 'rateyourmodule:show_module' m.moduleID %}">{{ m.full_name }}</a>
+                <br />
+            {% endfor %}
+        {% else %}
+            <strong>No modules currently available.</strong>
+        {% endif %}
+    </div>
+</main>
+
+{% endblock %}

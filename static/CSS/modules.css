@@ -1,0 +1,30 @@
+/* tags */
+
+main{
+    display:flex ;
+    justify-content:center ;
+}
+
+
+
+/* ids (#) */
+
+#modules{
+    padding:10px ;
+    display:flex ;
+    flex-direction:column ;
+    width:400px ;
+    gap:20px ;
+    justify-content:center ;
+    border-radius:5px ;
+    box-shadow:5px 5px ;
+    border:1px solid black ;
+}
+
+/* classes (.) */
+
+/* mutli/descendant selectors */
+p, a{
+    display:inline ;
+    margin:0px ;
+}
