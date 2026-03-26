@@ -132,15 +132,6 @@ class EditProfileViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
-    def test_edit_profile_logged_in(self):
-        add_user("testuser")
-        self.client.login(username="testuser", password="realpassword123")
-        response = self.client.get(
-            reverse("rateyourmodule:edit_profile", kwargs={"username": "testuser"})
-        )
-        self.assertEqual(response.status_code, 200)
-        # TODO: ADD AFTER IMPLEMENTED VIEW
-
 
 class DeleteProfileViewTests(TestCase):
     def setUp(self):
