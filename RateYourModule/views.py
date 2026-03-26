@@ -136,7 +136,13 @@ def add_module(request):
 
 @staff_member_required
 def delete_module(request, moduleID):
-    return HttpResponse("Work in progress...")
+    module = Module.objects.filter(moduleID=moduleID).first()
+    if module:
+        module.delete()
+        messages.success(request, "Successfully deleted the module!")
+    else:
+        messages.error(request, "This module does not exist.")
+    return redirect(reverse('rateyourmodule:modules'))
 
 
 @login_required
