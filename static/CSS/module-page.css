@@ -40,6 +40,10 @@ img{
     background-color: white;
 }
 
+.likeBttn{
+    background-color:white ;
+}
+
 /* IDs (#) */
 
 
@@ -67,6 +71,8 @@ img{
     background-color: rgb(191, 164, 164)
 }
 
+
+
 /* Decendant/Multi selectors */
 
 .individ-review .review-header{
@@ -77,7 +83,7 @@ img{
     display:none ;
 }
 
-#userActions #userBttns button{
+#userActions #userBttns button, #userActions .likeBttn{
     background-color:rgb(232, 201, 201) ;
     height:25px ;
     border-radius:8px ;
